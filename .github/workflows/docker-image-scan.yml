@@ -44,6 +44,7 @@ jobs:
         report_paths: '${{env.CLAIR_REPORT}}.json'
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
+        publish_summary: 'true'
         
   local-clair-scan-alpine:
     name: Local Clair Scan for Alpine
@@ -81,6 +82,7 @@ jobs:
         report_paths: '${{env.CLAIR_REPORT}}.json'
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
+        publish_summary: 'true'
 
   local-clair-scan-ubuntu:
     name: Local Clair Scan for Ubuntu
@@ -119,6 +121,7 @@ jobs:
         report_paths: '${{env.CLAIR_REPORT}}.json'
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
+        publish_summary: 'true'
         
   local-clair-scan-rhel:
     name: Local Clair Scan for rhel
@@ -157,6 +160,7 @@ jobs:
         report_paths: '${{env.CLAIR_REPORT}}.json'
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
+        publish_summary: 'true'
 
   remote-clair-scan-debian:
     name: Remote Clair Scan for Debian
@@ -192,6 +196,7 @@ jobs:
         report_paths: ${{env.CLAIR_REPORT}}.json
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
+        publish_summary: 'true'
         
   remote-clair-scan-alpine:
     name: Remote Clair Scan for Alpine
@@ -227,6 +232,7 @@ jobs:
         report_paths: ${{env.CLAIR_REPORT}}.json
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
+        publish_summary: 'true'
 
   remote-clair-scan-ubuntu:
     name: Remote Clair Scan for Ubuntu
@@ -263,6 +269,7 @@ jobs:
         report_paths: ${{env.CLAIR_REPORT}}.json
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
+        publish_summary: 'true'
 
   remote-clair-scan-rhel:
     name: Remote Clair Scan for rhel
@@ -297,3 +304,4 @@ jobs:
         report_paths: ${{env.CLAIR_REPORT}}.json
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
+        publish_summary: 'true'
