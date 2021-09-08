@@ -2,15 +2,15 @@ name: Local docker image scan
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ test-pr-input-sanitization ]
+
+  workflow_dispatch:
 
 jobs:
 
   local-clair-scan-debian:
     name: Local Clair Scan for Debian
-  
+
     env:
       DOCKER_TAG: theironbank:debian-latest
       CLAIR_REPORT: local-debian-clair-report
@@ -20,12 +20,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    
+
     - name: Build the Docker image
       run: docker build . --file debian/Dockerfile --tag ${DOCKER_TAG}
 
     - name: Execute Clair scan
-      uses: santander-group/clair-scan-action@main
+      uses: santander-group/clair-scan-action@fix/input-sanitization
       with:
         updater: debian
         report_path: ${{env.CLAIR_REPORT}}.json
@@ -37,7 +37,7 @@ jobs:
       with:
         name: ${{env.CLAIR_REPORT}}
         path: ${{env.CLAIR_REPORT}}.json
-        
+
     - name: Publish Scan Report
       uses: benauca/publish-clair-report@main
       with:
@@ -45,7 +45,7 @@ jobs:
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
         publish_summary: 'true'
-        
+
   local-clair-scan-alpine:
     name: Local Clair Scan for Alpine
     needs: local-clair-scan-debian
@@ -58,12 +58,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    
+
     - name: Build the Docker image
       run: docker build . --file alpine/Dockerfile --tag ${DOCKER_TAG}
 
     - name: Execute Clair scan
-      uses: santander-group/clair-scan-action@main
+      uses: santander-group/clair-scan-action@fix/input-sanitization
       with:
         updater: alpine
         report_path: ${{env.CLAIR_REPORT}}.json
@@ -75,7 +75,7 @@ jobs:
       with:
         name: ${{env.CLAIR_REPORT}}
         path: ${{env.CLAIR_REPORT}}.json
-        
+
     - name: Publish Scan Report
       uses: benauca/publish-clair-report@main
       with:
@@ -96,12 +96,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    
+
     - name: Build the Docker image
       run: docker build . --file ubuntu/Dockerfile --tag ${DOCKER_TAG}
 
     - name: Execute Clair scan
-      uses: santander-group/clair-scan-action@main
+      uses: santander-group/clair-scan-action@fix/input-sanitization
       with:
         clair_timeout: 150
         updater: ubuntu
@@ -114,7 +114,7 @@ jobs:
       with:
         name: ${{env.CLAIR_REPORT}}
         path: ${{env.CLAIR_REPORT}}.json
-        
+
     - name: Publish Scan Report
       uses: benauca/publish-clair-report@main
       with:
@@ -122,7 +122,7 @@ jobs:
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
         publish_summary: 'true'
-        
+
   local-clair-scan-rhel:
     name: Local Clair Scan for rhel
     needs: local-clair-scan-ubuntu
@@ -135,12 +135,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    
+
     - name: Build the Docker image
       run: docker build . --file rhel/Dockerfile --tag ${DOCKER_TAG}
 
     - name: Execute Clair scan
-      uses: santander-group/clair-scan-action@main
+      uses: santander-group/clair-scan-action@fix/input-sanitization
       with:
         updater: rhel
         clair_timeout: 600
@@ -153,7 +153,7 @@ jobs:
       with:
         name: ${{env.CLAIR_REPORT}}
         path: ${{env.CLAIR_REPORT}}.json
-        
+
     - name: Publish Scan Report
       uses: benauca/publish-clair-report@main
       with:
@@ -164,7 +164,7 @@ jobs:
 
   remote-clair-scan-debian:
     name: Remote Clair Scan for Debian
-  
+
     env:
       DOCKER_TAG: vulnerables/web-dvwa
       CLAIR_REPORT: remote-debian-clair-report
@@ -174,9 +174,9 @@ jobs:
     steps:
     - name: Docker login
       run: docker login -u ${{secrets.DOCKER_USR}} -p ${{secrets.DOCKER_TKN}}
-      
+
     - name: Execute Clair scan
-      uses: santander-group/clair-scan-action@main
+      uses: santander-group/clair-scan-action@fix/input-sanitization
       with:
         local: "no"
         updater: debian
@@ -189,7 +189,7 @@ jobs:
       with:
         name: ${{env.CLAIR_REPORT}}
         path: ${{env.CLAIR_REPORT}}.json
-        
+
     - name: Publish Scan Report
       uses: benauca/publish-clair-report@main
       with:
@@ -197,7 +197,7 @@ jobs:
         severity_level: 'Unknown'
         check_name: Report -> '${{env.CLAIR_REPORT}}'
         publish_summary: 'true'
-        
+
   remote-clair-scan-alpine:
     name: Remote Clair Scan for Alpine
     needs: remote-clair-scan-debian
@@ -210,9 +210,9 @@ jobs:
     steps:
     - name: Docker login
       run: docker login -u ${{secrets.DOCKER_USR}} -p ${{secrets.DOCKER_TKN}}
-      
+
     - name: Execute Clair scan
-      uses: santander-group/clair-scan-action@main
+      uses: santander-group/clair-scan-action@fix/input-sanitization
       with:
         local: "no"
         updater: alpine
@@ -225,7 +225,7 @@ jobs:
       with:
         name: ${{env.CLAIR_REPORT}}
         path: ${{env.CLAIR_REPORT}}.json
-        
+
     - name: Publish Scan Report
       uses: benauca/publish-clair-report@main
       with:
@@ -246,9 +246,9 @@ jobs:
     steps:
     - name: Docker login
       run: docker login -u ${{secrets.DOCKER_USR}} -p ${{secrets.DOCKER_TKN}}
-      
+
     - name: Execute Clair scan
-      uses: santander-group/clair-scan-action@main
+      uses: santander-group/clair-scan-action@fix/input-sanitization
       with:
         clair_timeout: 150
         local: "no"
@@ -262,7 +262,7 @@ jobs:
       with:
         name: ${{env.CLAIR_REPORT}}
         path: ${{env.CLAIR_REPORT}}.json
-        
+
     - name: Publish Scan Report
       uses: benauca/publish-clair-report@main
       with:
@@ -283,7 +283,7 @@ jobs:
     steps:
 
     - name: Execute Clair scan
-      uses: santander-group/clair-scan-action@main
+      uses: santander-group/clair-scan-action@fix/input-sanitization
       with:
         local: "no"
         updater: rhel
@@ -297,7 +297,7 @@ jobs:
       with:
         name: ${{env.CLAIR_REPORT}}
         path: ${{env.CLAIR_REPORT}}.json
-        
+
     - name: Publish Scan Report
       uses: benauca/publish-clair-report@main
       with:
