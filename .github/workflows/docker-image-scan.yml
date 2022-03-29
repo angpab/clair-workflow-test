@@ -1,3 +1,4 @@
+#TEST
 name: Local docker image scan
 
 on:
